@@ -1,3 +1,3 @@
-# Welcome to your Lovable project
+# Mythoscape
 
-TODO: Document your project here
+![Architecture](architecture.png)
