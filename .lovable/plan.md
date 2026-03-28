@@ -1,17 +1,24 @@
 
 
-## Remove Reading Panel from BookWorld
+## Make Added Books Ephemeral (Session-Only)
 
-Remove the entire reading/passage panel overlay from `BookWorld.tsx` — the bottom text box that shows passage titles, text, and navigation dots.
+Books added via "Add Book" should disappear when navigating back from their 360 world, so users must re-add them each time.
 
-### Change
+### Approach
 
-In `src/components/library/BookWorld.tsx`:
-- Delete the reading panel `AnimatePresence` block (lines ~133–189) that renders passages
-- Remove the toggle reader button (top-right corner, lines ~118–130)
-- Remove related state: `showReader`, `currentPassage`
-- Remove unused imports: `ChevronLeft`, `ChevronRight`, `BookOpen` (if not used elsewhere in the file), `Volume2`, `VolumeX`, `Play`, `Pause`
-- Remove the `Passage` interface and `passages`/`passage` variables
+Track which book IDs were added during the current session in React state. When the user clicks "Back to Library" from one of those books, delete it from the database so it no longer appears.
 
-This keeps the 3D world iframe, the enter transition, and the back button intact.
+### Changes
+
+**`src/pages/Library.tsx`:**
+1. Add a `sessionBookIds` state (`Set<string>`) to track books added via the dialog
+2. Pass a callback from `AddBookDialog` that registers the new book ID into `sessionBookIds`
+3. In the `onBack` handler for `BookWorld`, check if the book was a session book — if so, delete it from the `books` table (`supabase.from("books").delete().eq("id", id)`) and remove it from local state
+4. Pass the modified `onBack` to `BookWorld`
+
+**`src/components/library/AddBookDialog.tsx`:**
+1. Add an `onBookIdCreated?: (id: string) => void` prop
+2. After inserting, call `onBookIdCreated(book.id)` so the parent can track it
+
+No database schema changes needed — we just delete the row on back-navigation.
 
