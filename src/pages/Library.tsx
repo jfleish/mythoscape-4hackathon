@@ -168,15 +168,7 @@ export default function Library() {
                     }}
                     transition={{ duration: 0.3 }}
                   >
-                    {/* Pulsing corner markers when not hovered — subtle discovery hint */}
-                    {!isHovered && (
-                      <>
-                        <span className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary/30 rounded-tl-md animate-pulse" />
-                        <span className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary/30 rounded-tr-md animate-pulse" />
-                        <span className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary/30 rounded-bl-md animate-pulse" />
-                        <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary/30 rounded-br-md animate-pulse" />
-                      </>
-                    )}
+                    {/* No visible markers until hover */}
                   </motion.div>
 
                   {/* Hover tooltip — book info */}
