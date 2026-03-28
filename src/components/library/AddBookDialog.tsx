@@ -29,7 +29,7 @@ interface AddBookDialogProps {
   onBookIdCreated?: (id: string) => void;
 }
 
-export default function AddBookDialog({ open, onOpenChange, onBookAdded }: AddBookDialogProps) {
+export default function AddBookDialog({ open, onOpenChange, onBookAdded, onBookIdCreated }: AddBookDialogProps) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [scene, setScene] = useState("");
