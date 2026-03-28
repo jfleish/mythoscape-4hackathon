@@ -13,8 +13,8 @@ const LIBRARY_MARBLE_URL =
 function getHotspotPositions(count: number) {
   const positions: { left: string; top: string; width: string; height: string }[] = [];
   const hotspotWidth = Math.min(12, 60 / Math.max(count, 1));
-  const startLeft = 8;
-  const endLeft = 88 - hotspotWidth;
+  const startLeft = 12;
+  const endLeft = 85 - hotspotWidth;
   const spacing = count > 1 ? (endLeft - startLeft) / (count - 1) : 0;
 
   for (let i = 0; i < count; i++) {
