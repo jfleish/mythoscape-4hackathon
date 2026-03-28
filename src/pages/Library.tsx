@@ -117,7 +117,7 @@ export default function Library() {
             exit={{ opacity: 0 }}
             className="w-full h-full"
           >
-            <BookWorld book={selectedBook} onBack={() => setSelectedBookId(null)} />
+            <BookWorld book={selectedBook} onBack={handleBackFromWorld} />
           </motion.div>
         ) : (
           <motion.div
