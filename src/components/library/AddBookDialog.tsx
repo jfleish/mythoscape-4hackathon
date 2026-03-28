@@ -17,10 +17,15 @@ const HARDCODED_TITLE = "Beowulf";
 const HARDCODED_AUTHOR = "Anonymous";
 const HARDCODED_WORLD_PROMPT =
   "Beowulf battles a fire-breathing dragon in a dark mountainous cave";
+const BEOWULF_WORLD_ID = "5fffc4a7-be57-487c-b314-a053d70747c8";
 const HARDCODED_WORLD_MARBLE_URL =
-  "https://marble.worldlabs.ai/world/5fffc4a7-be57-487c-b314-a053d70747c8";
+  `https://marble.worldlabs.ai/viewer.html?splatUrl=${encodeURIComponent("https://cdn.marble.worldlabs.ai/" + BEOWULF_WORLD_ID + "/72b20977-4da9-4a50-9513-58a00d163f65_sand.spz")}&mobileUrl=${encodeURIComponent("https://cdn.marble.worldlabs.ai/" + BEOWULF_WORLD_ID + "/fc6e0c1e-09f7-4fc1-9b25-69c6bf3222b7_sand_500k.spz")}&marbleWorldId=${BEOWULF_WORLD_ID}`;
 const HARDCODED_THUMBNAIL_URL =
   "https://cdn.marble.worldlabs.ai/5fffc4a7-be57-487c-b314-a053d70747c8/8d761c12-79f5-43c5-a73e-9a2bbebb73d0_sand_mpi/thumbnail.webp";
+const HARDCODED_PANO_URL =
+  "https://cdn.marble.worldlabs.ai/5fffc4a7-be57-487c-b314-a053d70747c8/4ea95c72-01b7-4898-8538-cce0e9392051_pano/rgb_0.png";
+const HARDCODED_SPLAT_URL =
+  "https://cdn.marble.worldlabs.ai/5fffc4a7-be57-487c-b314-a053d70747c8/fc6e0c1e-09f7-4fc1-9b25-69c6bf3222b7_sand_500k.spz";
 
 interface AddBookDialogProps {
   open: boolean;
