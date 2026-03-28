@@ -1,0 +1,1 @@
+UPDATE books SET cover_image_url = 'https://khoahgmxayiajxnenzlv.supabase.co/storage/v1/object/public/book-covers/iliad.jpg' WHERE id = '3eba999f-2f20-4c88-b1f0-a9b40dd07430';
