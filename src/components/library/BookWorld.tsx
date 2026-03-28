@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, BookOpen } from "lucide-react";
+import { ArrowLeft, BookOpen, Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface BookWorldProps {
@@ -18,17 +18,50 @@ interface BookWorldProps {
 
 export default function BookWorld({ book, onBack }: BookWorldProps) {
   const [entering, setEntering] = useState(true);
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setEntering(false), 1500);
     return () => clearTimeout(timer);
   }, []);
 
+  // Cleanup audio on unmount
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+    if (playing) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setPlaying(!playing);
+  };
+
   const hasMarbleUrl = !!book.world_marble_url;
   const hasPano = !!book.pano_url;
+  const hasAudio = !!book.audio_url;
 
   return (
     <div className="relative w-full h-full overflow-hidden">
+      {/* Audio element */}
+      {hasAudio && (
+        <audio
+          ref={audioRef}
+          src={book.audio_url!}
+          onEnded={() => setPlaying(false)}
+          preload="auto"
+        />
+      )}
+
       {/* Transition overlay */}
       <AnimatePresence>
         {entering && (
@@ -99,6 +132,30 @@ export default function BookWorld({ book, onBack }: BookWorldProps) {
           Back to Library
         </Button>
       </motion.div>
+
+      {/* Audio play/pause button */}
+      {hasAudio && (
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1.5 }}
+          className="absolute bottom-6 right-6 z-30"
+        >
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={togglePlay}
+            className="gap-2 bg-background/80 backdrop-blur-sm border-border/50 hover:bg-background/90"
+          >
+            {playing ? (
+              <Pause className="w-4 h-4" />
+            ) : (
+              <Play className="w-4 h-4" />
+            )}
+            {playing ? "Pause Narration" : "Play Narration"}
+          </Button>
+        </motion.div>
+      )}
     </div>
   );
 }
