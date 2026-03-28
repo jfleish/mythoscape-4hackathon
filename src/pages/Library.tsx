@@ -54,6 +54,7 @@ export default function Library() {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [sessionBookIds, setSessionBookIds] = useState<Set<string>>(new Set());
 
   const fetchBooks = useCallback(async () => {
     const { data, error } = await supabase
