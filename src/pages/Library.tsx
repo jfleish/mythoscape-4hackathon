@@ -12,16 +12,15 @@ const LIBRARY_MARBLE_URL =
 // Generate hotspot positions dynamically across the scene
 function getHotspotPositions(count: number) {
   const positions: { left: string; top: string; width: string; height: string }[] = [];
-  // Spread books evenly across the middle band of the scene
-  const startLeft = 10;
-  const endLeft = 85;
-  const spacing = count > 1 ? (endLeft - startLeft) / (count - 1) : 0;
-  const hotspotWidth = Math.min(14, 70 / count);
+  const hotspotWidth = Math.min(12, 60 / Math.max(count, 1));
+  const totalWidth = hotspotWidth * count;
+  const gap = count > 1 ? Math.min(4, (80 - totalWidth) / (count - 1)) : 0;
+  const totalSpan = totalWidth + gap * (count - 1);
+  const startLeft = (100 - totalSpan) / 2;
 
   for (let i = 0; i < count; i++) {
-    const left = count === 1 ? 43 : startLeft + spacing * i;
     positions.push({
-      left: `${left}%`,
+      left: `${startLeft + i * (hotspotWidth + gap)}%`,
       top: "30%",
       width: `${hotspotWidth}%`,
       height: "35%",
