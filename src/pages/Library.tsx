@@ -39,6 +39,7 @@ interface Book {
   title: string;
   author: string;
   description: string | null;
+  cover_image_url: string | null;
   dewey_label: string;
   world_marble_url: string | null;
   pano_url: string | null;
