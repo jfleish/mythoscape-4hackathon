@@ -1,24 +1,35 @@
 
 
-## Make Added Books Ephemeral (Session-Only)
+## Generate Beowulf 360 World from Reference Images
 
-Books added via "Add Book" should disappear when navigating back from their 360 world, so users must re-add them each time.
+### What We'll Do
 
-### Approach
+1. **Combine the two uploaded reference images** into a single composite image using the AI image editing capability — placing them side by side to give the World Labs API a richer reference of the dragon battle scene
+2. **Upload the composite image** to the `world-uploads` storage bucket
+3. **Trigger the `generate-world` edge function** with the uploaded image URL and a detailed panoramic prompt
+4. **Once generation succeeds**, hardcode the resulting `world_marble_url` into `AddBookDialog.tsx` so future "Add Book" actions skip generation entirely and load the pre-built world instantly
 
-Track which book IDs were added during the current session in React state. When the user clicks "Back to Library" from one of those books, delete it from the database so it no longer appears.
+### Technical Steps
 
-### Changes
+**Step 1 — Create composite image**
+- Copy both uploaded images to `/tmp/`
+- Use Python (PIL/Pillow) to combine them side-by-side into a single reference image
+- Save to `/tmp/beowulf-combined.jpg`
 
-**`src/pages/Library.tsx`:**
-1. Add a `sessionBookIds` state (`Set<string>`) to track books added via the dialog
-2. Pass a callback from `AddBookDialog` that registers the new book ID into `sessionBookIds`
-3. In the `onBack` handler for `BookWorld`, check if the book was a session book — if so, delete it from the `books` table (`supabase.from("books").delete().eq("id", id)`) and remove it from local state
-4. Pass the modified `onBack` to `BookWorld`
+**Step 2 — Upload to storage**
+- Upload the composite to the `world-uploads` bucket via the Supabase storage API
+- Get the public URL
 
-**`src/components/library/AddBookDialog.tsx`:**
-1. Add an `onBookIdCreated?: (id: string) => void` prop
-2. After inserting, call `onBookIdCreated(book.id)` so the parent can track it
+**Step 3 — Trigger generation**
+- Call the `generate-world` edge function with:
+  - `sourceType: "image"`
+  - `imageUrl`: the public URL from storage
+  - `prompt`: "A dramatic wide zoomed-out aerial 360 panoramic view of Beowulf battling a fire-breathing dragon in a dark mountainous cave, epic fantasy scene with flames and smoke, ancient Norse mythology"
+  - `model`: "Marble 0.1-mini"
+  - No `bookId` — we just want the world URL back
 
-No database schema changes needed — we just delete the row on back-navigation.
+**Step 4 — Hardcode the result**
+- Once the world generates successfully, update `AddBookDialog.tsx` to skip calling `generate-world` entirely
+- Instead, insert the book row with the `world_marble_url` pre-populated
+- This makes "Add Book" instant — no waiting for generation
 
