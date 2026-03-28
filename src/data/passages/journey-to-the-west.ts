@@ -3,52 +3,73 @@ import type { Passage } from "@/types/book";
 export const journeyToTheWestPassages: Passage[] = [
   {
     passageId: "jtw-1",
-    title: "The World Before Time",
-    text: `There was a rock that since the creation of the world had been worked upon by the pure essences of Heaven and the fine savours of Earth, the vigour of sunshine and the grace of moonlight, till at last it became magically pregnant and one day split open, giving birth to a stone egg, about as large as a playing ball.
+    title: "The Waterfall",
+    originalText: `一群猴子耍了一会，却去那山涧中洗澡。见那股涧水奔流，真个似滚瓜涌溅。古云："禽有禽言，兽有兽语。"众猴都道："这股水不知是那里的水。我们今日赶闲无事，顺涧边往上溜头寻看源流，耍子去耶！"喊一声，都拖男挈女，呼弟呼兄，一齐跑来，顺涧爬山，直至源流之处，乃是一股瀑布飞泉。但见那：
 
-Fructified by the wind it developed into a stone monkey, complete with every organ and limb. At once this monkey learned to climb and run; but its first act was to make a bow towards each of the four quarters. As it did so, a steely light darted from this monkey's eyes and flashed as far as the Palace of the Pole Star.`,
-    audioUrl: null,
+一派白虹起，千寻雪浪飞。
+海风吹不断，江月照还依。
+冷气分青嶂，馀流润翠微。
+潺湲名瀑布，真似挂帘帷。`,
+    originalLabel: "Chinese",
+    text: `After playing for a while, the monkeys went to bathe in the mountain stream. They saw the current rushing along, splashing and foaming. As the old saying goes, birds have the speech of birds, and beasts the speech of beasts. The monkeys said, "We do not know where this water comes from. Today we have nothing to do. Let us follow the stream upstream, find its source, and amuse ourselves." With a shout, they called to one another and ran together up the ravine until they reached the headwaters: a flying waterfall.
+
+A white rainbow rose in one sweep,
+And snow-like spray flew from a thousand heights.
+The sea wind could not break it,
+The river moon still shone upon it.
+This murmuring cataract,
+Was truly like a curtain hanging in the air.`,
+    audioUrl: "/audio/monkey_king.mp3",
     startTimeMs: 0,
-    endTimeMs: 45000,
+    endTimeMs: 55000,
   },
   {
     passageId: "jtw-2",
-    title: "The Stone Monkey Becomes King",
-    text: `"We none of us could get through. The water of this waterfall comes straight down from the sky, and where it touches the rock it runs straight into the stream. If any of us were clever enough to get through the fall and find out where the water comes from, we would make him our king."
+    title: "The Stone Monkey Leaps",
+    originalText: `众猴拍手称扬道："好水，好水！原来此处远通山脚之下，直接大海之波。"又道："那一个有本事的，钻进去寻个源头出来，不伤身体者，我等即拜他为王。"连呼了三声，忽见丛杂中跳出一个石猴，应声高叫道："我进去，我进去。"好猴！也是他：
 
-Three times the call was given, when suddenly the stone monkey leapt from among the crowd. "I will go," he cried, "I will go!" He closed his eyes, crouched, and with one tremendous leap went clean through the waterfall.`,
-    audioUrl: null,
-    startTimeMs: 45000,
-    endTimeMs: 90000,
+今日芳名显，时来大运通。
+有缘居此地，王遣入仙宫。
+
+你看他瞑目蹲身，将身一纵，径跳入瀑布泉中，忽睁睛抬头观看，那里边却无水无波，明明朗朗的一架桥梁。`,
+    originalLabel: "Chinese",
+    text: `The monkeys clapped their hands and cried, "Fine water! Fine water! So this place runs all the way down through the mountain and joins the waves of the great sea." Then they said, "Whoever has the courage to go in, find the source, and come out again without injury, we will make him our king!" They shouted this three times. Suddenly, from the crowd, a stone monkey leapt forth and answered, "I'll go! I'll go!"
+
+He shut his eyes, crouched, and with one bound jumped straight into the waterfall. Then he opened his eyes and looked up. Inside there was no water at all -- only a bright and open bridge.`,
+    audioUrl: "/audio/monkey_king.mp3",
+    startTimeMs: 55000,
+    endTimeMs: 110000,
   },
   {
     passageId: "jtw-3",
-    title: "Behind the Waterfall",
-    text: `When he opened his eyes and looked about him, he found that where he had landed there was no water at all, but a great iron bridge, and on the bridge was a house. Looking more closely at this dwelling, he saw that it was made all of stone -- stone chairs, stone cups, stone plates, stone beds, and stone benches.
+    title: "The Water Curtain Cave",
+    originalText: `他住了身，定了神，仔细再看，原来是座铁板桥。桥下之水，冲贯于石窍之间，倒挂流出去，遮闭了桥门。却又欠身上桥头，再走再看，却似有人家住处一般，真个好所在。但见那：
 
-On a stone slab was the inscription: "This cave of the Water Curtain in the blessed land of the Mountain of Flowers and Fruit leads to Heaven." The stone monkey was beside himself with delight.`,
-    audioUrl: null,
-    startTimeMs: 90000,
-    endTimeMs: 135000,
+翠藓堆蓝，白云浮玉，光摇片片烟霞。虚窗静室，滑凳板生花。乳窟龙珠倚挂，萦回满地奇葩。锅灶傍崖存火迹，樽罍靠案见殽渣。石座石床真可爱，石盆石碗更堪夸。又见那一竿两竿修竹，三点五点梅花。几树青松常带雨，浑然像个人家。
+
+看罢多时，跳过桥中间，左右观看。只见正当中有一石碣，碣上有一行楷书大字，镌著"花果山福地，水帘洞洞天"。`,
+    originalLabel: "Chinese",
+    text: `He steadied himself and looked more carefully. It was an iron bridge. The water from beneath it poured through a gap in the rock and hung down outside, covering the doorway like a curtain. He stepped onto the bridge and looked around again. It seemed almost like a human dwelling, a truly excellent place.
+
+He saw green moss piled like blue silk, white clouds floating like jade, and glimmering mist and light. There were quiet rooms with smooth stone benches. Stone seats and stone beds were delightful; stone bowls and stone basins finer still. There were one or two stalks of bamboo, a few sprigs of plum blossom, and several pine trees always wet with rain. Altogether, it looked just like a household.
+
+Right in the center stood a stone tablet carved with the words: "Blessed Land of Flower-Fruit Mountain, Cave-Heaven of the Water Curtain Cave."`,
+    audioUrl: "/audio/monkey_king.mp3",
+    startTimeMs: 110000,
+    endTimeMs: 175000,
   },
   {
     passageId: "jtw-4",
-    title: "The Search for Immortality",
-    text: `But one day, in the midst of all their bliss, the Monkey King suddenly felt sad, and began to weep. The monkeys crowded round him. "What ails our great king?" they asked. "At present I have no cause for unhappiness," said the monkey. "But I have a misgiving about the future. Some day I shall grow old and weak, and at last the King of the Underworld will send for me. Is there no way by which I might live forever among the Heavenly Mists?"
+    title: "The Monkey King Crowned",
+    originalText: `石猿喜不自胜，急抽身往外便走，复瞑目蹲身，跳出水外，打了两个呵呵道："大造化！大造化！"众猴把他围住，问道："里面怎么样？水有多深？"石猴道："没水！没水！原来是一座铁板桥，桥那边是一座天造地设的家当。"
 
-At these words the monkeys covered their faces and wept, each thinking of his own mortality.`,
-    audioUrl: null,
-    startTimeMs: 135000,
-    endTimeMs: 180000,
-  },
-  {
-    passageId: "jtw-5",
-    title: "The Immortal Master",
-    text: `The stone monkey set out alone on a raft across the oceans, traveling many months until he reached the Western Continent. There he wandered through towns and villages, learning human ways and speech. At last, deep in the mountains, he found the Cave of the Slanting Moon and Three Stars, where lived the Patriarch Subhodi, a sage of the highest Immortal rank.
+众猴听说，即拱伏无违，一个个序齿排班，朝上礼拜，都称"千岁大王"。自此，石猿高登王位，将"石"字儿隐了，遂称"美猴王"。`,
+    originalLabel: "Chinese",
+    text: `The stone monkey was beside himself with joy. He hurried back, crouched again, jumped out through the water, and laughed aloud: "What great fortune! What great fortune!" The other monkeys crowded around him and asked, "What is it like inside? How deep is the water?" He replied, "No water! No water! There is an iron bridge, and beyond it is a home made by Heaven and Earth themselves."
 
-"I have come across many oceans to find an Immortal who will teach me the secret of eternal youth," said the monkey, kowtowing before the sage. The Patriarch looked at him long and hard. "You have some destiny," he said at last. "I will accept you as my pupil. What is your name?" "I have no name," said the monkey. "Then I shall call you Sun Wukong -- Monkey Awakened to Emptiness."`,
-    audioUrl: null,
-    startTimeMs: 180000,
+When the monkeys heard this, they bowed in full agreement. They lined up according to age, paid him homage, and all called him "Great King of a Thousand Years." From that time on, the stone monkey rose to the throne. Hiding the word "stone" from his name, he was thereafter called the Beautiful Monkey King.`,
+    audioUrl: "/audio/monkey_king.mp3",
+    startTimeMs: 175000,
     endTimeMs: 240000,
   },
 ];
