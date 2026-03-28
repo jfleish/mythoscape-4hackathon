@@ -1,35 +1,17 @@
 
 
-## Spread Out Book Hotspots
+## Remove Reading Panel from BookWorld
 
-The current layout clusters all hotspots tightly in the center. The user wants them spread across the full width of the 3D scene so you need to "look around" the iframe to discover different books.
+Remove the entire reading/passage panel overlay from `BookWorld.tsx` — the bottom text box that shows passage titles, text, and navigation dots.
 
 ### Change
 
-Update `getHotspotPositions` in `src/pages/Library.tsx` (lines 13-29):
-- Use the full viewport width (5% to 95%) instead of centering in a tight cluster
-- Keep hotspot width small (~12%) so they feel like discovery points scattered across the scene
-- Distribute evenly across the full range with generous spacing
+In `src/components/library/BookWorld.tsx`:
+- Delete the reading panel `AnimatePresence` block (lines ~133–189) that renders passages
+- Remove the toggle reader button (top-right corner, lines ~118–130)
+- Remove related state: `showReader`, `currentPassage`
+- Remove unused imports: `ChevronLeft`, `ChevronRight`, `BookOpen` (if not used elsewhere in the file), `Volume2`, `VolumeX`, `Play`, `Pause`
+- Remove the `Passage` interface and `passages`/`passage` variables
 
-```typescript
-function getHotspotPositions(count: number) {
-  const positions = [];
-  const hotspotWidth = Math.min(12, 60 / Math.max(count, 1));
-  const startLeft = 5;
-  const endLeft = 95 - hotspotWidth;
-  const spacing = count > 1 ? (endLeft - startLeft) / (count - 1) : 0;
-
-  for (let i = 0; i < count; i++) {
-    positions.push({
-      left: `${startLeft + i * spacing}%`,
-      top: "30%",
-      width: `${hotspotWidth}%`,
-      height: "35%",
-    });
-  }
-  return positions;
-}
-```
-
-This spreads books from 5% to 95% of the screen width — users will need to pan/look around the 3D scene to find each book.
+This keeps the 3D world iframe, the enter transition, and the back button intact.
 
