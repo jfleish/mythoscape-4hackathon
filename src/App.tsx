@@ -36,6 +36,7 @@ const App = () => (
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/gallery" element={<ProtectedRoute><Gallery /></ProtectedRoute>} />
             <Route path="/world/:token" element={<SharedWorld />} />
+            <Route path="/monkey-king" element={<MonkeyKing />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
