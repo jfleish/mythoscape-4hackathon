@@ -26,6 +26,7 @@ interface AddBookDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onBookAdded: () => void;
+  onBookIdCreated?: (id: string) => void;
 }
 
 export default function AddBookDialog({ open, onOpenChange, onBookAdded }: AddBookDialogProps) {
