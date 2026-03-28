@@ -26,9 +26,10 @@ interface AddBookDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onBookAdded: () => void;
+  onBookIdCreated?: (id: string) => void;
 }
 
-export default function AddBookDialog({ open, onOpenChange, onBookAdded }: AddBookDialogProps) {
+export default function AddBookDialog({ open, onOpenChange, onBookAdded, onBookIdCreated }: AddBookDialogProps) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [scene, setScene] = useState("");
@@ -53,6 +54,7 @@ export default function AddBookDialog({ open, onOpenChange, onBookAdded }: AddBo
       if (error) throw error;
 
       toast.success("Book added! Generating 360° world…");
+      onBookIdCreated?.(book.id);
       onOpenChange(false);
       setTitle("");
       setAuthor("");

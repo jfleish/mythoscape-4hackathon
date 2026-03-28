@@ -54,6 +54,7 @@ export default function Library() {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [sessionBookIds, setSessionBookIds] = useState<Set<string>>(new Set());
 
   const fetchBooks = useCallback(async () => {
     const { data, error } = await supabase
@@ -80,6 +81,20 @@ export default function Library() {
   const selectedBook = books.find((b) => b.id === selectedBookId);
   const hotspots = getHotspotPositions(books.length);
 
+  const handleBackFromWorld = useCallback(async () => {
+    if (selectedBookId && sessionBookIds.has(selectedBookId)) {
+      // Delete the session book from the database
+      await supabase.from("books").delete().eq("id", selectedBookId);
+      setBooks((prev) => prev.filter((b) => b.id !== selectedBookId));
+      setSessionBookIds((prev) => {
+        const next = new Set(prev);
+        next.delete(selectedBookId);
+        return next;
+      });
+    }
+    setSelectedBookId(null);
+  }, [selectedBookId, sessionBookIds]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -102,7 +117,7 @@ export default function Library() {
             exit={{ opacity: 0 }}
             className="w-full h-full"
           >
-            <BookWorld book={selectedBook} onBack={() => setSelectedBookId(null)} />
+            <BookWorld book={selectedBook} onBack={handleBackFromWorld} />
           </motion.div>
         ) : (
           <motion.div
@@ -239,6 +254,7 @@ export default function Library() {
               open={addDialogOpen}
               onOpenChange={setAddDialogOpen}
               onBookAdded={fetchBooks}
+              onBookIdCreated={(id) => setSessionBookIds((prev) => new Set(prev).add(id))}
             />
           </motion.div>
         )}
