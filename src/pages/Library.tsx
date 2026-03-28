@@ -6,7 +6,7 @@ import { Loader2, BookOpen, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const LIBRARY_MARBLE_URL =
-  "https://marble.worldlabs.ai/world/ffb39a1e-74c1-45d7-b8f9-40049a5d9d44";
+  "https://marble.worldlabs.ai/viewer.html?splatUrl=https%3A%2F%2Fcdn.marble.worldlabs.ai%2Fffb39a1e-74c1-45d7-b8f9-40049a5d9d44%2F9c8eee69-8fcc-4f12-8e15-b82a3f10c70c_sand.spz&mobileUrl=https%3A%2F%2Fcdn.marble.worldlabs.ai%2Fffb39a1e-74c1-45d7-b8f9-40049a5d9d44%2F288067c7-82dc-484f-a7de-703923780192_sand_500k.spz&marbleWorldId=ffb39a1e-74c1-45d7-b8f9-40049a5d9d44";
 
 interface Passage {
   id: number;
