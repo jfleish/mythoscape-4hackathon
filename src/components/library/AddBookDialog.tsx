@@ -15,12 +15,12 @@ import { toast } from "sonner";
 
 const HARDCODED_TITLE = "Beowulf";
 const HARDCODED_AUTHOR = "Anonymous";
-const HARDCODED_IMAGE_URL =
-  "https://khoahgmxayiajxnenzlv.supabase.co/storage/v1/object/public/world-uploads/beowulf-reference.jpg";
-const HARDCODED_PROMPT =
-  "A dramatic wide zoomed-out aerial 360 panoramic view of Beowulf battling a fire-breathing dragon in a dark mountainous cave, epic fantasy scene with flames and smoke, ancient Norse mythology";
 const HARDCODED_WORLD_PROMPT =
   "Beowulf battles a fire-breathing dragon in a dark mountainous cave";
+const HARDCODED_WORLD_MARBLE_URL =
+  "https://marble.worldlabs.ai/world/5fffc4a7-be57-487c-b314-a053d70747c8";
+const HARDCODED_THUMBNAIL_URL =
+  "https://cdn.marble.worldlabs.ai/5fffc4a7-be57-487c-b314-a053d70747c8/8d761c12-79f5-43c5-a73e-9a2bbebb73d0_sand_mpi/thumbnail.webp";
 
 interface AddBookDialogProps {
   open: boolean;
