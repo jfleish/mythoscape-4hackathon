@@ -14,6 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
+      books: {
+        Row: {
+          audio_url: string | null
+          author: string
+          cover_image_url: string | null
+          created_at: string
+          description: string | null
+          dewey_category: string
+          dewey_label: string
+          id: string
+          is_active: boolean
+          pano_url: string | null
+          passages: Json
+          splat_url: string | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          world_id: string | null
+          world_marble_url: string | null
+          world_prompt: string
+        }
+        Insert: {
+          audio_url?: string | null
+          author: string
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          dewey_category?: string
+          dewey_label?: string
+          id?: string
+          is_active?: boolean
+          pano_url?: string | null
+          passages?: Json
+          splat_url?: string | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          world_id?: string | null
+          world_marble_url?: string | null
+          world_prompt: string
+        }
+        Update: {
+          audio_url?: string | null
+          author?: string
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          dewey_category?: string
+          dewey_label?: string
+          id?: string
+          is_active?: boolean
+          pano_url?: string | null
+          passages?: Json
+          splat_url?: string | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          world_id?: string | null
+          world_marble_url?: string | null
+          world_prompt?: string
+        }
+        Relationships: []
+      }
       media_assets: {
         Row: {
           created_at: string
