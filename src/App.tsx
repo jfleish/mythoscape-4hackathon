@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Gallery from "./pages/Gallery";
 import SharedWorld from "./pages/SharedWorld";
 import Library from "./pages/Library";
+import MonkeyKing from "./pages/MonkeyKing";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
