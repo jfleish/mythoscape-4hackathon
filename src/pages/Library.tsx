@@ -2,11 +2,17 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import BookWorld from "@/components/library/BookWorld";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, BookOpen, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Loader2, BookOpen } from "lucide-react";
 
 const LIBRARY_MARBLE_URL =
   "https://marble.worldlabs.ai/viewer.html?splatUrl=https%3A%2F%2Fcdn.marble.worldlabs.ai%2Fffb39a1e-74c1-45d7-b8f9-40049a5d9d44%2F9c8eee69-8fcc-4f12-8e15-b82a3f10c70c_sand.spz&mobileUrl=https%3A%2F%2Fcdn.marble.worldlabs.ai%2Fffb39a1e-74c1-45d7-b8f9-40049a5d9d44%2F288067c7-82dc-484f-a7de-703923780192_sand_500k.spz&marbleWorldId=ffb39a1e-74c1-45d7-b8f9-40049a5d9d44";
+
+// Hotspot positions (percentage-based) — placed where bookshelves appear in the 3D scene
+const HOTSPOT_POSITIONS = [
+  { left: "18%", top: "35%", width: "14%", height: "30%" },
+  { left: "43%", top: "30%", width: "14%", height: "35%" },
+  { left: "72%", top: "35%", width: "14%", height: "30%" },
+];
 
 interface Passage {
   id: number;
@@ -32,6 +38,7 @@ export default function Library() {
   const [loading, setLoading] = useState(true);
   const [selectedBookId, setSelectedBookId] = useState<string | null>(null);
   const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -105,7 +112,7 @@ export default function Library() {
               onLoad={() => setIframeLoaded(true)}
             />
 
-            {/* Loading overlay while iframe loads */}
+            {/* Loading overlay */}
             <AnimatePresence>
               {!iframeLoaded && (
                 <motion.div
@@ -124,54 +131,84 @@ export default function Library() {
               )}
             </AnimatePresence>
 
-            {/* Book selection overlay — bottom shelf */}
-            <motion.div
-              initial={{ opacity: 0, y: 60 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.5, type: "spring", damping: 20 }}
-              className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none"
-            >
-              <div className="pointer-events-auto bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-16 pb-6 px-6">
-                <div className="max-w-4xl mx-auto">
-                  <div className="flex items-center gap-2 mb-4">
-                    <BookOpen className="w-5 h-5 text-primary" />
-                    <h2 className="font-display text-lg font-semibold text-foreground">
-                      Featured Classics
-                    </h2>
-                  </div>
+            {/* Bookshelf hotspot overlays */}
+            {iframeLoaded && books.slice(0, 3).map((book, index) => {
+              const pos = HOTSPOT_POSITIONS[index];
+              const isHovered = hoveredIndex === index;
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {books.map((book) => (
-                      <button
-                        key={book.id}
-                        onClick={() => setSelectedBookId(book.id)}
-                        className="group text-left bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 hover:bg-white/10 hover:border-primary/40 transition-all duration-300"
+              return (
+                <div
+                  key={book.id}
+                  className="absolute z-10 cursor-pointer"
+                  style={{
+                    left: pos.left,
+                    top: pos.top,
+                    width: pos.width,
+                    height: pos.height,
+                  }}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  onClick={() => setSelectedBookId(book.id)}
+                >
+                  {/* Invisible hover zone with visible border on hover */}
+                  <motion.div
+                    className="w-full h-full rounded-xl border-2 transition-colors duration-300 relative"
+                    style={{
+                      borderColor: isHovered
+                        ? "hsl(var(--primary) / 0.7)"
+                        : "transparent",
+                      background: isHovered
+                        ? "radial-gradient(ellipse at center, hsl(var(--primary) / 0.12) 0%, transparent 70%)"
+                        : "transparent",
+                    }}
+                    animate={{
+                      boxShadow: isHovered
+                        ? "0 0 40px 8px hsl(var(--primary) / 0.3), inset 0 0 30px hsl(var(--primary) / 0.08)"
+                        : "0 0 0px 0px transparent",
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {/* Pulsing corner markers when not hovered — subtle discovery hint */}
+                    {!isHovered && (
+                      <>
+                        <span className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary/30 rounded-tl-md animate-pulse" />
+                        <span className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary/30 rounded-tr-md animate-pulse" />
+                        <span className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary/30 rounded-bl-md animate-pulse" />
+                        <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary/30 rounded-br-md animate-pulse" />
+                      </>
+                    )}
+                  </motion.div>
+
+                  {/* Hover tooltip — book info */}
+                  <AnimatePresence>
+                    {isHovered && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute left-1/2 -translate-x-1/2 -bottom-2 translate-y-full pointer-events-none"
                       >
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-display font-semibold text-sm text-foreground truncate">
+                        <div className="bg-black/85 backdrop-blur-lg border border-primary/40 rounded-xl px-4 py-3 min-w-[180px] text-center shadow-lg shadow-primary/10">
+                          <div className="flex items-center justify-center gap-1.5 mb-1">
+                            <BookOpen className="w-3.5 h-3.5 text-primary" />
+                            <h3 className="font-display font-semibold text-sm text-foreground whitespace-nowrap">
                               {book.title}
                             </h3>
-                            <p className="text-xs text-muted-foreground mt-0.5">
-                              {book.author}
-                            </p>
-                            <span className="inline-block mt-2 text-[10px] uppercase tracking-wider text-primary/70 bg-primary/10 px-2 py-0.5 rounded-full">
-                              {book.dewey_label}
-                            </span>
                           </div>
-                          <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors mt-1 shrink-0" />
-                        </div>
-                        {book.description && (
-                          <p className="text-xs text-muted-foreground/70 mt-2 line-clamp-2">
-                            {book.description}
+                          <p className="text-xs text-muted-foreground">
+                            {book.author}
                           </p>
-                        )}
-                      </button>
-                    ))}
-                  </div>
+                          <p className="text-[10px] text-primary/70 mt-1.5 uppercase tracking-wider">
+                            Click to enter world →
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-              </div>
-            </motion.div>
+              );
+            })}
           </motion.div>
         )}
       </AnimatePresence>
