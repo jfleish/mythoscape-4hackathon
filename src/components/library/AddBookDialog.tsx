@@ -51,7 +51,10 @@ export default function AddBookDialog({ open, onOpenChange, onBookAdded, onBookI
           author: HARDCODED_AUTHOR,
           world_prompt: HARDCODED_WORLD_PROMPT,
           world_marble_url: HARDCODED_WORLD_MARBLE_URL,
+          world_id: BEOWULF_WORLD_ID,
           thumbnail_url: HARDCODED_THUMBNAIL_URL,
+          pano_url: HARDCODED_PANO_URL,
+          splat_url: HARDCODED_SPLAT_URL,
           user_id: null,
           is_active: true,
         })
