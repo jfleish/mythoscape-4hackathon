@@ -1,0 +1,1 @@
+CREATE POLICY "Anyone can insert books" ON public.books FOR INSERT TO anon WITH CHECK (user_id IS NULL);
