@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Environment, Text, Float } from "@react-three/drei";
-import { Suspense, useState, useCallback } from "react";
+import { OrbitControls, Text, Float } from "@react-three/drei";
+import { Suspense, useState, useCallback, forwardRef } from "react";
 import * as THREE from "three";
 
 interface BookData {
@@ -17,19 +17,19 @@ interface LibrarySceneProps {
   onSelectBook: (bookId: string) => void;
 }
 
-function Bookshelf({ position, books, onSelectBook, onHoverBook }: {
+const Bookshelf = forwardRef<THREE.Group, {
   position: [number, number, number];
   books: BookData[];
   onSelectBook: (id: string) => void;
   onHoverBook: (id: string | null) => void;
-}) {
+}>(({ position, books, onSelectBook, onHoverBook }, ref) => {
   const shelfColor = "#5c3a1e";
   const shelfWidth = 4;
   const shelfDepth = 0.6;
 
   return (
-    <group position={position}>
-      {/* Shelf frame - back panel */}
+    <group position={position} ref={ref}>
+      {/* Back panel */}
       <mesh position={[0, 1.5, -shelfDepth / 2]}>
         <boxGeometry args={[shelfWidth + 0.2, 3.2, 0.08]} />
         <meshStandardMaterial color="#3d2510" />
@@ -46,15 +46,13 @@ function Bookshelf({ position, books, onSelectBook, onHoverBook }: {
       {/* Three shelf levels */}
       {[0, 1.05, 2.1].map((y, shelfIndex) => (
         <group key={shelfIndex}>
-          {/* Shelf plank */}
           <mesh position={[0, y, 0]}>
             <boxGeometry args={[shelfWidth + 0.1, 0.08, shelfDepth]} />
             <meshStandardMaterial color={shelfColor} />
           </mesh>
 
-          {/* Books on this shelf */}
           {books.slice(shelfIndex, shelfIndex + 1).map((book, i) => (
-            <Book
+            <BookMesh
               key={book.id}
               book={book}
               position={[
@@ -76,14 +74,15 @@ function Bookshelf({ position, books, onSelectBook, onHoverBook }: {
       </mesh>
     </group>
   );
-}
+});
+Bookshelf.displayName = "Bookshelf";
 
-function Book({ book, position, onSelect, onHover }: {
+const BookMesh = forwardRef<THREE.Group, {
   book: BookData;
   position: [number, number, number];
   onSelect: (id: string) => void;
   onHover: (id: string | null) => void;
-}) {
+}>(({ book, position, onSelect, onHover }, ref) => {
   const [hovered, setHovered] = useState(false);
 
   const bookColors: Record<string, string> = {
@@ -99,6 +98,7 @@ function Book({ book, position, onSelect, onHover }: {
 
   return (
     <group
+      ref={ref}
       position={position}
       onPointerOver={(e) => {
         e.stopPropagation();
@@ -117,7 +117,6 @@ function Book({ book, position, onSelect, onHover }: {
         onSelect(book.id);
       }}
     >
-      {/* Book body */}
       <mesh
         position={[0, 0, hovered ? 0.15 : 0]}
         scale={hovered ? [1.05, 1.05, 1.05] : [1, 1, 1]}
@@ -130,7 +129,7 @@ function Book({ book, position, onSelect, onHover }: {
         />
       </mesh>
 
-      {/* Spine text */}
+      {/* Spine label */}
       <Text
         position={[bookWidth / 2 + 0.001, 0, hovered ? 0.15 : 0]}
         rotation={[0, Math.PI / 2, Math.PI / 2]}
@@ -139,12 +138,10 @@ function Book({ book, position, onSelect, onHover }: {
         color="#f0e6d3"
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter-latin-400-normal.woff"
       >
         {book.title.length > 18 ? book.title.slice(0, 18) + "…" : book.title}
       </Text>
 
-      {/* Glow effect on hover */}
       {hovered && (
         <pointLight
           position={[0, 0, 0.5]}
@@ -155,39 +152,28 @@ function Book({ book, position, onSelect, onHover }: {
       )}
     </group>
   );
-}
+});
+BookMesh.displayName = "BookMesh";
 
 function LibraryRoom() {
-  const floorColor = "#2a1a0e";
-  const wallColor = "#1a120a";
-
   return (
     <group>
-      {/* Floor */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
         <planeGeometry args={[20, 20]} />
-        <meshStandardMaterial color={floorColor} roughness={0.8} />
+        <meshStandardMaterial color="#2a1a0e" roughness={0.8} />
       </mesh>
-
-      {/* Back wall */}
       <mesh position={[0, 3, -4]} receiveShadow>
         <planeGeometry args={[20, 8]} />
-        <meshStandardMaterial color={wallColor} roughness={0.9} />
+        <meshStandardMaterial color="#1a120a" roughness={0.9} />
       </mesh>
-
-      {/* Left wall */}
       <mesh position={[-6, 3, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
         <planeGeometry args={[20, 8]} />
-        <meshStandardMaterial color={wallColor} roughness={0.9} />
+        <meshStandardMaterial color="#1a120a" roughness={0.9} />
       </mesh>
-
-      {/* Right wall */}
       <mesh position={[6, 3, 0]} rotation={[0, -Math.PI / 2, 0]} receiveShadow>
         <planeGeometry args={[20, 8]} />
-        <meshStandardMaterial color={wallColor} roughness={0.9} />
+        <meshStandardMaterial color="#1a120a" roughness={0.9} />
       </mesh>
-
-      {/* Ceiling */}
       <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 6, 0]}>
         <planeGeometry args={[20, 20]} />
         <meshStandardMaterial color="#0d0906" roughness={1} />
@@ -199,12 +185,10 @@ function LibraryRoom() {
 function LampLight({ position }: { position: [number, number, number] }) {
   return (
     <group position={position}>
-      {/* Lamp shade */}
       <mesh position={[0, -0.15, 0]}>
         <cylinderGeometry args={[0.15, 0.25, 0.3, 8]} />
         <meshStandardMaterial color="#d4a050" emissive="#d4a050" emissiveIntensity={0.3} transparent opacity={0.8} />
       </mesh>
-      {/* Chain */}
       <mesh position={[0, 0.2, 0]}>
         <cylinderGeometry args={[0.01, 0.01, 0.5]} />
         <meshStandardMaterial color="#8b7355" metalness={0.8} />
@@ -223,9 +207,8 @@ function WelcomeSign() {
           color="#d4a050"
           anchorX="center"
           anchorY="middle"
-          font="/fonts/inter-latin-400-normal.woff"
         >
-          ✦ THE GRAND LIBRARY ✦
+          THE GRAND LIBRARY
         </Text>
         <Text
           position={[0, -0.4, 0]}
@@ -233,7 +216,6 @@ function WelcomeSign() {
           color="#a08060"
           anchorX="center"
           anchorY="middle"
-          font="/fonts/inter-latin-400-normal.woff"
         >
           Select a book to enter its world
         </Text>
@@ -252,7 +234,7 @@ export default function LibraryScene({ books, onSelectBook }: LibrarySceneProps)
   const hoveredData = books.find((b) => b.id === hoveredBook);
 
   return (
-    <div className="relative w-full h-full">
+    <div style={{ width: "100%", height: "100vh", position: "relative" }}>
       <Canvas
         shadows
         camera={{ position: [0, 2.5, 6], fov: 55 }}
@@ -262,35 +244,18 @@ export default function LibraryScene({ books, onSelectBook }: LibrarySceneProps)
           <color attach="background" args={["#0a0705"]} />
           <fog attach="fog" args={["#0a0705", 8, 20]} />
 
-          {/* Ambient + directional light */}
           <ambientLight intensity={0.15} color="#ffd4a0" />
           <directionalLight position={[2, 5, 3]} intensity={0.3} color="#ffeedd" castShadow />
 
-          {/* Hanging lamps */}
           <LampLight position={[-2, 5, 0]} />
           <LampLight position={[2, 5, 0]} />
 
           <LibraryRoom />
           <WelcomeSign />
 
-          {/* Center bookshelf with all 3 books */}
           <Bookshelf
             position={[0, 0, -3.5]}
             books={books}
-            onSelectBook={onSelectBook}
-            onHoverBook={handleHover}
-          />
-
-          {/* Side bookshelves (decorative) */}
-          <Bookshelf
-            position={[-5.5, 0, -1]}
-            books={[]}
-            onSelectBook={onSelectBook}
-            onHoverBook={handleHover}
-          />
-          <Bookshelf
-            position={[5.5, 0, -1]}
-            books={[]}
             onSelectBook={onSelectBook}
             onHoverBook={handleHover}
           />
@@ -307,9 +272,18 @@ export default function LibraryScene({ books, onSelectBook }: LibrarySceneProps)
         </Suspense>
       </Canvas>
 
-      {/* HUD overlay for hovered book */}
+      {/* HUD overlay */}
       {hoveredData && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 glass-card px-6 py-4 max-w-md text-center pointer-events-none animate-in fade-in duration-200">
+        <div
+          style={{
+            position: "absolute",
+            bottom: 24,
+            left: "50%",
+            transform: "translateX(-50%)",
+            pointerEvents: "none",
+          }}
+          className="glass-card px-6 py-4 max-w-md text-center animate-in fade-in duration-200"
+        >
           <h3 className="font-display font-bold text-lg text-foreground">
             {hoveredData.title}
           </h3>
