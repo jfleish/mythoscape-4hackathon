@@ -254,6 +254,7 @@ export default function Library() {
               open={addDialogOpen}
               onOpenChange={setAddDialogOpen}
               onBookAdded={fetchBooks}
+              onBookIdCreated={(id) => setSessionBookIds((prev) => new Set(prev).add(id))}
             />
           </motion.div>
         )}
