@@ -1,0 +1,1 @@
+UPDATE books SET cover_image_url = 'https://khoahgmxayiajxnenzlv.supabase.co/storage/v1/object/public/book-covers/bhagavad-gita.jpg' WHERE id = 'c3274ae7-0abb-4941-9fb1-221d15d23145';
