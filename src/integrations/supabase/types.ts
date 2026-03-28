@@ -14,7 +14,92 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      media_assets: {
+        Row: {
+          created_at: string
+          file_name: string
+          id: string
+          kind: string
+          upload_status: string
+          user_id: string
+          worldlabs_asset_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          file_name: string
+          id?: string
+          kind?: string
+          upload_status?: string
+          user_id: string
+          worldlabs_asset_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          file_name?: string
+          id?: string
+          kind?: string
+          upload_status?: string
+          user_id?: string
+          worldlabs_asset_id?: string | null
+        }
+        Relationships: []
+      }
+      worlds: {
+        Row: {
+          created_at: string
+          id: string
+          is_public: boolean
+          media_asset_id: string | null
+          prompt: string
+          scene_url: string | null
+          share_token: string | null
+          source_type: string
+          status: string
+          thumbnail_url: string | null
+          updated_at: string
+          user_id: string
+          world_labs_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_public?: boolean
+          media_asset_id?: string | null
+          prompt: string
+          scene_url?: string | null
+          share_token?: string | null
+          source_type?: string
+          status?: string
+          thumbnail_url?: string | null
+          updated_at?: string
+          user_id: string
+          world_labs_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_public?: boolean
+          media_asset_id?: string | null
+          prompt?: string
+          scene_url?: string | null
+          share_token?: string | null
+          source_type?: string
+          status?: string
+          thumbnail_url?: string | null
+          updated_at?: string
+          user_id?: string
+          world_labs_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "worlds_media_asset_id_fkey"
+            columns: ["media_asset_id"]
+            isOneToOne: false
+            referencedRelation: "media_assets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
