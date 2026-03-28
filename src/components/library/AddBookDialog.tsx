@@ -45,6 +45,8 @@ export default function AddBookDialog({ open, onOpenChange, onBookAdded, onBookI
           title: HARDCODED_TITLE,
           author: HARDCODED_AUTHOR,
           world_prompt: HARDCODED_WORLD_PROMPT,
+          world_marble_url: HARDCODED_WORLD_MARBLE_URL,
+          thumbnail_url: HARDCODED_THUMBNAIL_URL,
           user_id: null,
           is_active: true,
         })
@@ -53,30 +55,13 @@ export default function AddBookDialog({ open, onOpenChange, onBookAdded, onBookI
 
       if (error) throw error;
 
-      toast.success("Book added! Generating 360° world…");
+      toast.success("Book added!");
       onBookIdCreated?.(book.id);
       onOpenChange(false);
       setTitle("");
       setAuthor("");
       setScene("");
       onBookAdded();
-
-      // Fire-and-forget: trigger world generation
-      supabase.functions.invoke("generate-world", {
-        body: {
-          bookId: book.id,
-          sourceType: "image",
-          imageUrl: HARDCODED_IMAGE_URL,
-          prompt: HARDCODED_PROMPT,
-          displayName: HARDCODED_TITLE,
-          model: "Marble 0.1-mini",
-        },
-      }).then(({ error: fnError }) => {
-        if (fnError) {
-          console.error("World generation failed:", fnError);
-          toast.error("World generation failed — you can still view the book");
-        }
-      });
     } catch (err: any) {
       console.error("Failed to add book:", err);
       toast.error("Failed to add book");
