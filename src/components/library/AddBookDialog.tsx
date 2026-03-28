@@ -54,6 +54,7 @@ export default function AddBookDialog({ open, onOpenChange, onBookAdded, onBookI
       if (error) throw error;
 
       toast.success("Book added! Generating 360° world…");
+      onBookIdCreated?.(book.id);
       onOpenChange(false);
       setTitle("");
       setAuthor("");
