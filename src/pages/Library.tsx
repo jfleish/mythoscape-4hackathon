@@ -233,6 +233,15 @@ export default function Library() {
                           className="absolute left-1/2 -translate-x-1/2 -bottom-2 translate-y-full pointer-events-none"
                         >
                           <div className="bg-black/85 backdrop-blur-lg border border-primary/40 rounded-xl px-4 py-3 min-w-[180px] text-center shadow-lg shadow-primary/10">
+                            {book.cover_image_url && (
+                              <div className="mb-2 flex justify-center">
+                                <img
+                                  src={book.cover_image_url}
+                                  alt={`${book.title} cover`}
+                                  className="w-24 h-32 object-cover rounded-lg border border-primary/20 shadow-md"
+                                />
+                              </div>
+                            )}
                             <div className="flex items-center justify-center gap-1.5 mb-1">
                               <BookOpen className="w-3.5 h-3.5 text-primary" />
                               <h3 className="font-display font-semibold text-sm text-foreground whitespace-nowrap">
