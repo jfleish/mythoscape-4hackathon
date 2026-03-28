@@ -31,6 +31,7 @@ export type Database = {
           thumbnail_url: string | null
           title: string
           updated_at: string
+          user_id: string | null
           world_id: string | null
           world_marble_url: string | null
           world_prompt: string
@@ -51,6 +52,7 @@ export type Database = {
           thumbnail_url?: string | null
           title: string
           updated_at?: string
+          user_id?: string | null
           world_id?: string | null
           world_marble_url?: string | null
           world_prompt: string
@@ -71,6 +73,7 @@ export type Database = {
           thumbnail_url?: string | null
           title?: string
           updated_at?: string
+          user_id?: string | null
           world_id?: string | null
           world_marble_url?: string | null
           world_prompt?: string
