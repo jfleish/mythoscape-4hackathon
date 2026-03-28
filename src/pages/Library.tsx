@@ -45,6 +45,7 @@ interface Book {
   thumbnail_url: string | null;
   passages: Passage[];
   audio_url: string | null;
+  user_id: string | null;
 }
 
 export default function Library() {
@@ -82,8 +83,35 @@ export default function Library() {
   const hotspots = getHotspotPositions(books.length);
 
   const handleBackFromWorld = useCallback(async () => {
-    if (selectedBookId && sessionBookIds.has(selectedBookId)) {
-      // Delete the session book from the database
+    if (!selectedBookId) {
+      setSelectedBookId(null);
+      return;
+    }
+
+    const isEphemeralBeowulf =
+      selectedBook?.title === "Beowulf" && selectedBook.user_id === null;
+
+    if (isEphemeralBeowulf) {
+      const beowulfIds = books
+        .filter((b) => b.title === "Beowulf" && b.user_id === null)
+        .map((b) => b.id);
+
+      await supabase
+        .from("books")
+        .delete()
+        .eq("title", "Beowulf")
+        .is("user_id", null);
+
+      setBooks((prev) =>
+        prev.filter((b) => !(b.title === "Beowulf" && b.user_id === null))
+      );
+
+      setSessionBookIds((prev) => {
+        const next = new Set(prev);
+        beowulfIds.forEach((id) => next.delete(id));
+        return next;
+      });
+    } else if (sessionBookIds.has(selectedBookId)) {
       await supabase.from("books").delete().eq("id", selectedBookId);
       setBooks((prev) => prev.filter((b) => b.id !== selectedBookId));
       setSessionBookIds((prev) => {
@@ -92,8 +120,9 @@ export default function Library() {
         return next;
       });
     }
+
     setSelectedBookId(null);
-  }, [selectedBookId, sessionBookIds]);
+  }, [books, selectedBook, selectedBookId, sessionBookIds]);
 
   if (loading) {
     return (
